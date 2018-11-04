@@ -1,0 +1,42 @@
+---
+  - name: yumレポジトリにnginxを追加
+    yum_repository:
+      name: nginx
+      description: nginx yum repo
+      baseurl: http://nginx.org/packages/mainline/centos/7/$basearch/
+      gpgcheck: no
+
+  - name: yumでnginxをインストール
+    yum:
+      name: nginx
+      state: latest
+
+  - name: ドキュメントルートフォルダを作成
+    file:
+      path: /www
+      state: directory
+      mode: 0777
+
+  - name: デフォルトindex.htmlを配置
+    copy:
+      src: index.html
+      dest: /www/index.html
+      mode: 0777
+
+  - name: コンフィグファイル置き換え
+    copy:
+      src: default.conf
+      dest: /etc/nginx/conf.d/default.conf
+
+  - name: 80番ポート開放
+    firewalld:
+      port: 80/tcp
+      permanent: yes
+      immediate: yes
+      state: enabled
+
+  - name: nginxを再起動
+    systemd:
+      name: nginx
+      enabled: yes
+      state: restarted
