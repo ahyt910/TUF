@@ -1,0 +1,29 @@
+---
+  - name: squid3.5のrepoファイルを転送
+    copy:
+      src: squid-3.5.16-1.el6.x86_64.rpm
+      dest: /tmp/squid-3.5.16-1.el6.x86_64.rpm
+
+  - name: インストール開始
+    yum:
+      name: /tmp/squid-3.5.16-1.el6.x86_64.rpm
+      state: latest
+
+  - name: squid.conf 置き換え
+    copy:
+      src: squid.conf
+      dest: /etc/squid/squid.conf
+
+  - name: 8080番ポート開放
+    iptables:
+      comment: allow http access
+      chain: INPUT
+      protocol: tcp
+      destination_port: 8080
+      jump: ACCEPT
+
+  - name: squidを再起動
+    service:
+      name: squid
+      state: restarted
+      enabled: yes

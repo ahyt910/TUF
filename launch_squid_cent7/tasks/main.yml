@@ -1,0 +1,23 @@
+---
+  - name: yumでsquidをインストール
+    yum:
+      name: squid
+      state: latest
+
+  - name: squid.confを配置する
+    copy:
+      src: squid.conf
+      dest: /etc/squid/squid.conf
+
+  - name: 80番ポート開放
+    firewalld:
+      port: 8080/tcp
+      permanent: yes
+      immediate: yes
+      state: enabled
+
+  - name: squidを再起動
+    systemd:
+      name: squid
+      enabled: yes
+      state: restarted
