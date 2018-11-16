@@ -14,7 +14,7 @@
   - name: httpd.conf を置き換え
     copy:
       src: httpd.conf
-      dest: /etc/httpd/conf/http.conf
+      dest: /etc/httpd/conf/httpd.conf
 
   - name: index.html をドキュメントルートへ配置
     copy:
