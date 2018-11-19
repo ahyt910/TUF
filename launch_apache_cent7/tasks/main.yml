@@ -14,7 +14,7 @@
   - name: httpd.conf を置き換え
     copy:
       src: httpd.conf
-      dest: /etc/httpd/conf/http.conf
+      dest: /etc/httpd/conf/httpd.conf
 
   - name: index.html をドキュメントルートへ配置
     copy:
@@ -22,13 +22,6 @@
       dest: /www/index.html
       owner: apache
       mode: 0777
-
-  - name: port 80 を開放
-    firewalld:
-      port: 80/tcp
-      permanent: yes
-      immediate: yes
-      state: enabled
 
   - name: apache再起動
     systemd:

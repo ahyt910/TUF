@@ -1,7 +1,7 @@
 ---
   - name: Apache2.4のrepoファイルを転送
     copy:
-      src: epel-httpd24.repo
+      src: /var/lib/jenkins/middle/epel-httpd24.repo
       dest: /etc/yum.repos.d/epel-httpd24.repo
 
   - name: インストール開始
@@ -29,14 +29,6 @@
     copy:
       src: httpd.conf
       dest: /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
-
-  - name: 80番ポート開放
-    iptables:
-      comment: allow http access
-      chain: INPUT
-      protocol: tcp
-      destination_port: 80
-      jump: ACCEPT
 
   - name: 80番ポート占領プロセス停止
     shell: fuser -k -n tcp 80
